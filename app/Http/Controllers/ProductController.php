@@ -43,17 +43,27 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $product=Product::findOr($id);    
-        
+        // Find the product by ID
+        $product = Product::find($id);    
+    
+        // Validate the incoming request
         $request->validate([
-            "name"=>"required",
-            "description"=>"required",
-            "price"=>"required"
+            "name" => "required|string|max:255",
+            "description" => "required|string",
+            "price" => "required|numeric|min:0"
         ]);
-
-        return $product->update($request->all());
-        
+    
+        if ($product) {
+            // Update the product with the validated data
+            $product->update($request->all());
+            // Return a successful response with the updated product
+            return response()->json($product, 200);
+        } else {
+            // Return a not found response if the product doesn't exist
+            return response()->json(['message' => 'Product not found'], 404);
+        }
     }
+    
 
     /**
      * Remove the specified resource from storage.
