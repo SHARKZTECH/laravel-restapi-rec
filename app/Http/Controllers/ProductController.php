@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -42,13 +43,15 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $product=Product::findOr($id);    
+        
         $request->validate([
             "name"=>"required",
             "description"=>"required",
             "price"=>"required"
         ]);
 
-        return Product::update($request->all());
+        return $product->update($request->all());
         
     }
 
