@@ -49,4 +49,9 @@ class AuthController extends Controller
         ])->onlyInput('email');
         
     }
+
+    public function logout() {
+        auth()->logout();
+        // Auth::logout();        
+    }
 }
